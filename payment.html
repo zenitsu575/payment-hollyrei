@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>— Hollyrei X All Payment</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-main: #121212;
+            --bg-deep: #0a0a0a;
+            --card-light: #e5e5e5;
+            --card-surface: #1e1e1e;
+            --text-on-light: #1f2937;
+            --text-on-dark: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent: #2563eb;
+            --radius-box: 24px;
+        }
+
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            outline: none; user-select: none; scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg-deep);
+            color: var(--text-on-dark);
+            min-height: 100vh;
+            display: flex; justify-content: center; align-items: flex-start;
+            overflow: hidden;
+        }
+
+        .app-frame {
+            width: 100%; max-width: 480px; height: 100vh;
+            background: var(--bg-main);
+            position: relative; display: flex; flex-direction: column;
+            overflow: hidden; box-shadow: 0 0 50px rgba(0,0,0,0.8);
+        }
+
+        @media(min-width: 500px) {
+            body { align-items: center; }
+            .app-frame { height: 95vh; border-radius: 35px; border: 4px solid #333; }
+        }
+
+        .header-area {
+            padding: 30px 24px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .btn-icon {
+            width: 42px; height: 42px; border-radius: 12px;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-on-dark); display: flex; align-items: center; justify-content: center;
+            font-size: 20px; cursor: pointer; transition: 0.2s; position: relative;
+        }
+        .btn-icon:active { transform: scale(0.95); background: rgba(255,255,255,0.1); }
+
+        .currency-selector {
+            width: 110px; height: 36px;
+            background: rgba(255,255,255,0.05); 
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            display: flex; align-items: center; gap: 8px;
+            padding: 0 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .currency-selector:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .currency-flag {
+            width: 20px; height: 20px;
+            border-radius: 4px;
+            background: linear-gradient(to bottom, #ff4b55 50%, #ffffff 50%);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px;
+            color: white;
+            font-weight: bold;
+        }
+        .currency-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-on-dark);
+        }
+
+        .content-area {
+            flex: 1; overflow-y: auto; padding: 0 24px 100px;
+            scrollbar-width: none;
+        }
+        .content-area::-webkit-scrollbar { display: none; }
+
+        .profile-section {
+            display: flex; align-items: center; gap: 15px; margin-bottom: 15px;
+        }
+        .p-img {
+            width: 55px; height: 55px; border-radius: 50%; border: 2px solid var(--text-on-dark);
+            object-fit: cover;
+        }
+        .p-info h2 { font-size: 18px; font-weight: 700; color: var(--text-on-dark); margin-bottom: 2px; }
+        .p-info p { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
+        .status-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; }
+
+        .social-bar {
+            margin-top: 8px; display: flex; gap: 10px;
+        }
+        .soc-icon {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: rgba(255,255,255,0.1); color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; text-decoration: none; transition: 0.2s;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .soc-icon:active { transform: scale(0.9); background: var(--accent); border-color: var(--accent); }
+
+        .music-player {
+            background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%);
+            border-radius: 16px;
+            padding: 15px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .music-player::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent) 0%, #10b981 100%);
+        }
+        .music-cover {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            background: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--accent);
+            flex-shrink: 0;
+        }
+        .music-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .music-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-on-dark);
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .music-artist {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        .music-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        .music-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: var(--text-on-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .music-btn:active {
+            transform: scale(0.9);
+            background: var(--accent);
+        }
+        .music-btn.play {
+            background: var(--accent);
+            color: white;
+        }
+        .volume-slider {
+            width: 60px;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            position: relative;
+            cursor: pointer;
+        }
+        .volume-fill {
+            position: absolute;
+            height: 100%;
+            background: var(--accent);
+            border-radius: 2px;
+            width: 80%;
+        }
+        .volume-handle {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 80%;
+            cursor: grab;
+        }
+
+        .ad-slider {
+            position: relative;
+            width: 100%;
+            height: 140px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 20px 0;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+        }
+        .ad-slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.6s ease-in-out;
+        }
+        .ad-slide.active {
+            opacity: 1;
+        }
+        .ad-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .ad-dots {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+            z-index: 10;
+        }
+        .ad-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+        }
+        .ad-dot.active {
+            background: white;
+        }
+
+        .marquee-container {
+            background: #1e1e1e; border-radius: 8px; overflow: hidden; white-space: nowrap;
+            padding: 8px 0; margin-bottom: 25px; border-left: 3px solid var(--accent); margin-top: 10px;
+        }
+        .marquee-text {
+            display: inline-block; padding-left: 100%; animation: marquee 15s linear infinite;
+            font-size: 11px; color: var(--text-muted); font-family: monospace;
+        }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+        .menu-title { font-size: 14px; font-weight: 700; margin-bottom: 15px; color: var(--text-on-dark); letter-spacing: 0.5px; text-transform: uppercase; opacity: 0.8; }
+        
+        .menu-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+        }
+
+        .menu-card {
+            background: var(--card-light);
+            border-radius: var(--radius-box);
+            padding: 20px; height: 130px;
+            display: flex; flex-direction: column; justify-content: space-between;
+            position: relative; overflow: hidden;
+            transition: transform 0.2s; cursor: pointer;
+        }
+        .menu-card:active { transform: scale(0.96); }
+        
+        .mc-icon {
+            width: 40px; height: 40px; background: #fff;
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            font-size: 20px; color: #000; box-shadow: 0 4px 10px rgba(0,0,0,0.05); z-index: 1;
+        }
+        
+        .mc-text h3 { font-size: 15px; font-weight: 800; color: var(--text-on-light); margin-bottom: 3px; }
+        .mc-text p { font-size: 11px; font-weight: 500; color: #666; }
+        .menu-card::before {
+            content: ''; position: absolute; top: -20px; right: -20px;
+            width: 80px; height: 80px; border-radius: 50%;
+            background: rgba(0,0,0,0.05); z-index: 0;
+        }
+
+        .card-qris-full {
+            grid-column: span 2; height: 90px;
+            background: #222;
+            display: flex; flex-direction: row; align-items: center; justify-content: space-between;
+            padding: 0 25px; border: 1px solid rgba(255,255,255,0.05);
+        }
+        .qris-left {
+            width: 50px; height: 50px; background: rgba(255,255,255,0.1);
+            border-radius: 14px; display: flex; align-items: center; justify-content: center;
+            font-size: 24px; color: #fff;
+        }
+        .qris-right h3 { color: #fff; font-size: 18px; margin-bottom: 2px; }
+        .qris-right p { color: #888; font-size: 12px; }
+
+        .info-features {
+            margin-top: 15px;
+            display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;
+        }
+        .feat-item {
+            background: #fff; border-radius: 16px; padding: 15px 10px;
+            text-align: center; cursor: pointer; transition: 0.2s;
+        }
+        .feat-item:active { transform: translateY(3px); background: #f0f0f0; }
+        .feat-icon { 
+            font-size: 20px; color: var(--accent); margin-bottom: 5px; 
+            display: inline-block;
+        }
+        .feat-text h5 { color: #222; font-size: 11px; font-weight: 700; }
+        .feat-text p { color: #666; font-size: 9px; }
+
+        .promo-banner {
+            margin-top: 25px;
+            background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%);
+            border-radius: 20px; padding: 20px;
+            position: relative; overflow: hidden;
+        }
+        .promo-banner h4 { color: white; font-size: 16px; font-weight: 700; margin-bottom: 5px; position: relative; z-index: 2; }
+        .promo-banner p { color: rgba(255,255,255,0.8); font-size: 11px; position: relative; z-index: 2; max-width: 70%; }
+        .promo-deco { position: absolute; bottom: -10px; right: -10px; font-size: 80px; color: rgba(255,255,255,0.1); transform: rotate(-15deg); }
+
+        .fab-container { position: fixed; bottom: 25px; right: 25px; z-index: 90; }
+        .btn-fab {
+            width: 58px; height: 58px; border-radius: 20px;
+            background: var(--text-on-dark); color: var(--bg-deep);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 26px; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            border: none; cursor: pointer; transition: 0.3s;
+        }
+        .btn-fab:hover { transform: scale(1.1) rotate(5deg); }
+
+        .chat-modal {
+            position: fixed; bottom: 90px; right: 25px; width: 300px; height: 400px;
+            background: #1a1a1a; border-radius: 24px; border: 1px solid #333;
+            display: flex; flex-direction: column; overflow: hidden;
+            transform: scale(0); opacity: 0; transform-origin: bottom right;
+            transition: 0.3s ease; z-index: 90;
+        }
+        .chat-modal.active { transform: scale(1); opacity: 1; }
+        .cm-header {
+            padding: 15px; background: #222; display: flex; justify-content: space-between;
+            color: white; font-weight: 700; font-size: 13px;
+        }
+        .cm-body {
+            flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;
+        }
+        .cm-footer {
+            padding: 10px; background: #222; display: flex; gap: 5px; overflow-x: auto;
+        }
+        .bubble {
+            padding: 8px 12px; border-radius: 10px; font-size: 11px; max-width: 85%;
+        }
+        .b-bot { background: #333; color: #ddd; align-self: flex-start; }
+        .b-user { background: var(--text-on-dark); color: #000; align-self: flex-end; }
+        .c-chip {
+            background: transparent; border: 1px solid #444; color: #aaa;
+            padding: 5px 10px; border-radius: 20px; font-size: 10px;
+            cursor: pointer; white-space: nowrap;
+        }
+
+        .sheet-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 100;
+            opacity: 0; pointer-events: none; transition: 0.3s; backdrop-filter: blur(5px);
+        }
+        .sheet-overlay.active { opacity: 1; pointer-events: auto; }
+        .sheet-panel {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            background: #e5e5e5; border-radius: 30px 30px 0 0;
+            padding: 25px; transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            max-height: 80vh; overflow-y: auto;
+        }
+        .sheet-overlay.active .sheet-panel { transform: translateY(0); }
+        .pay-item {
+            background: #fff; padding: 15px; border-radius: 16px;
+            margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .pi-left { display: flex; align-items: center; gap: 12px; }
+        .pi-img { width: 40px; height: 40px; object-fit: contain; }
+        .pi-info h5 { font-size: 14px; color: #000; font-weight: 700; }
+        .pi-info p { font-size: 12px; color: #666; font-family: monospace; }
+        .btn-action { width: 34px; height: 34px; background: #f3f4f6; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #333; border: none; font-size: 16px; cursor: pointer; }
+        .qris-display { background: #fff; padding: 20px; border-radius: 20px; text-align: center; }
+
+        .ripple { position: relative; overflow: hidden; }
+        .ripple span { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.3); transform: scale(0); animation: ripple 0.6s linear; pointer-events: none; }
+        @keyframes ripple { to { transform: scale(4); opacity: 0; } }
+
+        .menu-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 150;
+            opacity: 0; pointer-events: none; transition: 0.3s;
+        }
+        .menu-overlay.active {
+            opacity: 1; pointer-events: auto;
+        }
+        .menu-panel {
+            position: absolute; top: 0; left: 0; width: 80%; height: 100%;
+            background: var(--bg-deep); border-right: 1px solid #333;
+            transform: translateX(-100%); transition: transform 0.3s ease;
+            padding: 20px; overflow-y: auto;
+        }
+        .menu-overlay.active .menu-panel {
+            transform: translateX(0);
+        }
+        .menu-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-bottom: 20px; border-bottom: 1px solid #333;
+            margin-bottom: 20px;
+        }
+        .menu-close {
+            width: 32px; height: 32px; background: rgba(255,255,255,0.1);
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            color: var(--text-on-dark); cursor: pointer;
+            font-size: 20px;
+        }
+        .menu-title {
+            font-size: 18px; font-weight: 700; color: var(--text-on-dark);
+        }
+        .menu-item {
+            padding: 15px 0; border-bottom: 1px solid #333;
+            cursor: pointer; transition: 0.2s;
+        }
+        .menu-item:hover {
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+        }
+        .menu-item h4 {
+            font-size: 16px; font-weight: 600; color: var(--text-on-dark);
+            margin-bottom: 5px;
+        }
+        .menu-item p {
+            font-size: 13px; color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+    
+    <!-- Audio Player Element -->
+    <audio id="musicPlayer" loop>
+        <!-- 
+        GANTI MUSIK DI SINI:
+        Ubah src dengan URL musik yang Anda inginkan
+        Contoh: 
+        src="https://files.catbox.moe/musik.mp3"
+        atau
+        src="https://files.catbox.moe/zkuvy0.mp4"
+        -->
+        <source src="https://files.catbox.moe/zkuvy0.mp4" type="audio/mp4">
+        Browser Anda tidak mendukung elemen audio.
+    </audio>
+
+    <div class="app-frame">
+        <div class="header-area">
+            <div class="btn-icon ripple" id="btnMenu">
+                <i class="ri-menu-3-line"></i>
+            </div>
+            <div style="font-weight:800; font-size:16px; letter-spacing:1px;">— Hollyrei<span style="color:var(--text-muted);">Payment</span></div>
+            <div class="currency-selector ripple" id="currencySelector">
+                <div class="currency-flag"></div>
+                <div class="currency-text">ID / IDR</div>
+            </div>
+        </div>
+
+        <div class="content-area" id="mainContent">
+            <!-- Konten akan dimuat dinamis di sini -->
+        </div>
+
+        <div class="fab-container">
+            <button class="btn-fab ripple" id="fabChat">
+                <i class="ri-customer-service-2-fill"></i>
+            </button>
+        </div>
+
+        <div class="chat-modal" id="chatWin">
+            <div class="cm-header">
+                <span>Live Support</span>
+                <i class="ri-close-line" id="closeChat" style="cursor:pointer; font-size:18px;"></i>
+            </div>
+            <div class="cm-body" id="chatBody">
+                <div class="bubble b-bot">Halo! Ada yang bisa kami bantu?</div>
+            </div>
+            <div class="cm-footer">
+                <button class="c-chip" onclick="sendChat('konfirmasi')">Konfirmasi</button>
+                <button class="c-chip" onclick="sendChat('masalah')">Kendala</button>
+                <button class="c-chip" onclick="sendChat('admin')">Admin</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="sheet-overlay" id="sheet">
+        <div class="sheet-panel">
+            <div style="width:40px; height:5px; background:#ccc; border-radius:10px; margin:0 auto 15px;"></div>
+            <div style="text-align:center; margin-bottom:25px;">
+                <h3 style="color:#000; font-size:16px; font-weight:800;" id="sheetTitle">Payment</h3>
+            </div>
+            <div id="sheetList"></div>
+            <button class="ripple" id="btnCloseSheet" style="width:100%; padding:15px; border-radius:12px; border:none; background:#000; color:#fff; font-weight:700; margin-top:15px;">Tutup</button>
+        </div>
+    </div>
+
+    <div class="menu-overlay" id="menuOverlay">
+        <div class="menu-panel">
+            <div class="menu-header">
+                <div class="menu-title">Menu</div>
+                <div class="menu-close" id="menuClose">
+                    <i class="ri-close-line"></i>
+                </div>
+            </div>
+            <div class="menu-item" onclick="showHomePage()">
+                <h4>Beranda</h4>
+                <p>Kembali ke halaman utama</p>
+            </div>
+            <div class="menu-item" onclick="showUsagePage()">
+                <h4>Cara Penggunaan</h4>
+                <p>Panduan lengkap cara menggunakan layanan</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // MUSIK CUSTOMIZATION - EDIT BAGIAN INI
+        // ============================================
+        const musicConfig = {
+            // Ubah URL musik di sini
+            url: "https://files.catbox.moe/zkuvy0.mp4", // Ganti dengan URL musik Anda
+            title: "",
+            artist: "",
+            autoPlay: false, // true = musik langsung diputar saat halaman dimuat
+            volume: 0.8 // Volume default (0.0 - 1.0)
+        };
+        // ============================================
+
+        const adBanners = [
+            "https://files.catbox.moe/s4mnro.jpg",
+        ];
+        const dataPay = {
+            dana: { name: 'DANA', num: '6287787586289', img: 'https://cdn.odzre.my.id/r25.jpg' },
+            shopee: { name: 'ShopeePay', num: '6285727462791', img: 'https://cdn.odzre.my.id/ukr.jpg' },
+            gopay: { name: 'GoPay', num: '6285926900781', img: 'https://cdn.odzre.my.id/fw6.jpg' },
+            ovo: { name: 'OVO', num: 'Belum Tersedia', img: 'https://cdn.odzre.my.id/lpp.jpg' },
+            linkaja: { name: 'LinkAja', num: 'Belum Tersedia', img: 'https://cdn.odzre.my.id/qga.jpg' },
+            bca: { name: 'BCA', num: 'Belum Tersedia', img: 'https://cdn.odzre.my.id/nbo.jpg' },
+            sebank: { name: 'SeaBank', num: 'Belum Tersedia', img: 'https://cdn.odzre.my.id/k7m.jpg' },
+            bri: { name: 'BRI', num: 'Belum Tersedia', img: 'https://cdn.odzre.my.id/tke.jpg' },
+            telkomsel: { name: 'Telkomsel', num: 'Belum Tersedia', img: 'https://cdn.odzre.my.id/zmm.jpg' },
+            indosat: { name: 'Indosat', num: '6285727462791', img: 'https://cdn.odzre.my.id/nz4.jpg' },
+            tri: { name: 'Tri (3)', num: 'Belum Tersedia', img: 'https://cdn.odzre.my.id/z39.jpg' },
+            smartfren: { name: 'Smartfren', num: 'Belum Tersedia', img: 'https://cdn.odzre.my.id/3wg.jpg' }
+        };
+
+        // Audio Elements
+        const audio = document.getElementById('clickSound');
+        const musicAudio = document.getElementById('musicPlayer');
+        
+        // Global Music State
+        let isPlaying = false;
+        let currentVolume = musicConfig.volume;
+        let musicInitialized = false;
+
+        function setupMusicControls() {
+            // Cari elemen musik di halaman saat ini
+            const playBtn = document.getElementById('playBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const volumeSlider = document.getElementById('volumeSlider');
+            const volumeFill = document.getElementById('volumeFill');
+            const volumeHandle = document.getElementById('volumeHandle');
+            const musicTitle = document.getElementById('musicTitle');
+            const musicArtist = document.getElementById('musicArtist');
+
+            if (!playBtn) return; // Jika tidak ada musik player di halaman ini
+
+            // Update UI musik
+            musicTitle.textContent = musicConfig.title;
+            musicArtist.textContent = musicConfig.artist;
+            updateMusicButton(playBtn);
+
+            // Update volume display
+            updateVolumeDisplay(volumeFill, volumeHandle);
+
+            // Hapus event listener lama jika ada
+            const newPlayBtn = playBtn.cloneNode(true);
+            playBtn.parentNode.replaceChild(newPlayBtn, playBtn);
+            
+            const newPrevBtn = prevBtn.cloneNode(true);
+            prevBtn.parentNode.replaceChild(newPrevBtn, prevBtn);
+            
+            const newNextBtn = nextBtn.cloneNode(true);
+            nextBtn.parentNode.replaceChild(newNextBtn, nextBtn);
+
+            // Setup event listeners baru
+            newPlayBtn.addEventListener('click', toggleMusic);
+            newPrevBtn.addEventListener('click', () => {
+                playTick();
+                musicAudio.currentTime = 0;
+                if (!isPlaying) {
+                    musicAudio.play();
+                }
+            });
+            newNextBtn.addEventListener('click', () => {
+                playTick();
+                musicAudio.currentTime = 0;
+                if (!isPlaying) {
+                    musicAudio.play();
+                }
+            });
+
+            // Volume control
+            if (volumeSlider) {
+                let isDragging = false;
+                
+                // Hapus event listener lama
+                const newVolumeSlider = volumeSlider.cloneNode(true);
+                volumeSlider.parentNode.replaceChild(newVolumeSlider, volumeSlider);
+                
+                const newVolumeHandle = document.getElementById('volumeHandle');
+                
+                newVolumeSlider.addEventListener('click', (e) => {
+                    const rect = newVolumeSlider.getBoundingClientRect();
+                    const percent = Math.min(Math.max((e.clientX - rect.left) / rect.width, 0), 1);
+                    setVolume(percent);
+                });
+                
+                if (newVolumeHandle) {
+                    newVolumeHandle.addEventListener('mousedown', startDrag);
+                    newVolumeHandle.addEventListener('touchstart', startDrag);
+                }
+
+                function startDrag(e) {
+                    e.preventDefault();
+                    isDragging = true;
+                    document.addEventListener('mousemove', onDrag);
+                    document.addEventListener('touchmove', onDrag);
+                    document.addEventListener('mouseup', stopDrag);
+                    document.addEventListener('touchend', stopDrag);
+                }
+                
+                function onDrag(e) {
+                    if (!isDragging) return;
+                    const rect = newVolumeSlider.getBoundingClientRect();
+                    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+                    const percent = Math.min(Math.max((clientX - rect.left) / rect.width, 0), 1);
+                    setVolume(percent);
+                }
+                
+                function stopDrag() {
+                    isDragging = false;
+                    document.removeEventListener('mousemove', onDrag);
+                    document.removeEventListener('touchmove', onDrag);
+                    document.removeEventListener('mouseup', stopDrag);
+                    document.removeEventListener('touchend', stopDrag);
+                }
+            }
+        }
+
+        function updateMusicButton(playBtn) {
+            if (!playBtn) return;
+            if (isPlaying) {
+                playBtn.innerHTML = '<i class="ri-pause-fill"></i>';
+                playBtn.classList.add('play');
+            } else {
+                playBtn.innerHTML = '<i class="ri-play-fill"></i>';
+                playBtn.classList.remove('play');
+            }
+        }
+
+        function initMusicPlayer() {
+            if (musicInitialized) return;
+            
+            // Set musik dari config
+            musicAudio.src = musicConfig.url;
+            musicAudio.volume = currentVolume;
+            
+            // Event Listeners untuk musik
+            musicAudio.addEventListener('play', () => {
+                isPlaying = true;
+                const playBtn = document.getElementById('playBtn');
+                if (playBtn) updateMusicButton(playBtn);
+            });
+            
+            musicAudio.addEventListener('pause', () => {
+                isPlaying = false;
+                const playBtn = document.getElementById('playBtn');
+                if (playBtn) updateMusicButton(playBtn);
+            });
+            
+            musicAudio.addEventListener('ended', () => {
+                // Loop kembali ke awal
+                musicAudio.currentTime = 0;
+                musicAudio.play();
+            });
+            
+            musicAudio.addEventListener('error', (e) => {
+                console.error('Error loading music:', e);
+                const musicTitle = document.getElementById('musicTitle');
+                const musicArtist = document.getElementById('musicArtist');
+                if (musicTitle) musicTitle.textContent = 'Error Loading Music';
+                if (musicArtist) musicArtist.textContent = 'Check URL in config';
+            });
+            
+            musicInitialized = true;
+            
+            // Auto play jika diatur
+            if (musicConfig.autoPlay) {
+                setTimeout(() => {
+                    musicAudio.play().catch(e => {
+                        console.log('Auto-play blocked:', e);
+                    });
+                }, 500);
+            }
+        }
+        
+        function toggleMusic() {
+            playTick();
+            if (isPlaying) {
+                musicAudio.pause();
+            } else {
+                musicAudio.play().catch(e => {
+                    console.error('Playback failed:', e);
+                    alert('Tidak dapat memutar musik. Periksa URL musik di kode.');
+                });
+            }
+        }
+        
+        function setVolume(percent) {
+            currentVolume = percent;
+            musicAudio.volume = currentVolume;
+            updateVolumeDisplay();
+        }
+        
+        function updateVolumeDisplay(volumeFill, volumeHandle) {
+            const fill = volumeFill || document.getElementById('volumeFill');
+            const handle = volumeHandle || document.getElementById('volumeHandle');
+            
+            if (fill && handle) {
+                const percent = currentVolume * 100;
+                fill.style.width = `${percent}%`;
+                handle.style.left = `${percent}%`;
+            }
+        }
+        
+        const playTick = () => {
+            if (audio) {
+                audio.currentTime = 0;
+                audio.play().catch(() => {});
+            }
+        };
+
+        function initAdSlider() {
+            const slider = document.getElementById('adSlider');
+            if (!slider) return;
+            
+            slider.innerHTML = '';
+
+            adBanners.forEach((url, index) => {
+                const slide = document.createElement('div');
+                slide.className = 'ad-slide';
+                if (index === 0) slide.classList.add('active');
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = `Iklan ${index + 1}`;
+                img.loading = 'lazy';
+                slide.appendChild(img);
+                slider.appendChild(slide);
+            });
+
+            const dotsContainer = document.createElement('div');
+            dotsContainer.className = 'ad-dots';
+            adBanners.forEach((_, index) => {
+                const dot = document.createElement('span');
+                dot.className = 'ad-dot';
+                if (index === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => showAdSlide(index));
+                dotsContainer.appendChild(dot);
+            });
+            slider.appendChild(dotsContainer);
+
+            let current = 0;
+            setInterval(() => {
+                current = (current + 1) % adBanners.length;
+                showAdSlide(current);
+            }, 4000);
+        }
+
+        function showAdSlide(index) {
+            document.querySelectorAll('.ad-slide').forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            document.querySelectorAll('.ad-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        }
+
+        const txtName = "— Hollyrei";
+        
+        function typeWriter() {
+            const userName = document.getElementById('userName');
+            if (!userName) return;
+            
+            userName.innerHTML = '';
+            let i = 0;
+            function type() {
+                if (i < txtName.length) {
+                    userName.innerHTML += txtName.charAt(i);
+                    i++;
+                    setTimeout(type, 80);
+                }
+            }
+            type();
+        }
+
+        const fab = document.getElementById('fabChat');
+        const win = document.getElementById('chatWin');
+        const closeC = document.getElementById('closeChat');
+        const bodyC = document.getElementById('chatBody');
+
+        fab.onclick = () => {
+            playTick();
+            win.classList.add('active');
+            fab.style.transform = 'scale(0)';
+        };
+        closeC.onclick = () => {
+            playTick();
+            win.classList.remove('active');
+            fab.style.transform = 'scale(1)';
+        };
+
+        window.sendChat = (msg) => {
+            playTick();
+            const u = document.createElement('div');
+            u.className = 'bubble b-user';
+            u.innerText = msg;
+            bodyC.appendChild(u);
+            bodyC.scrollTop = bodyC.scrollHeight;
+
+            setTimeout(() => {
+                const b = document.createElement('div');
+                b.className = 'bubble b-bot';
+                if (msg === 'konfirmasi') 
+                    b.innerHTML = "✅ Silakan kirim bukti transfer ke admin untuk percepat proses.";
+                else if (msg === 'admin') 
+                    b.innerHTML = "📞 Hubungi WhatsApp: <strong>6285926900781</strong> untuk bantuan langsung.";
+                else 
+                    b.innerHTML = "⚠️ Tunggu 1-2 menit. Masih error? Langsung chat admin!";
+                bodyC.appendChild(b);
+                bodyC.scrollTop = bodyC.scrollHeight;
+                playTick();
+            }, 800);
+        };
+
+        const sheet = document.getElementById('sheet');
+        const list = document.getElementById('sheetList');
+        const title = document.getElementById('sheetTitle');
+        const menuOverlay = document.getElementById('menuOverlay');
+        const menuClose = document.getElementById('menuClose');
+        const mainContent = document.getElementById('mainContent');
+        const currencySelector = document.getElementById('currencySelector');
+
+        function rowHtml(key) {
+            const d = dataPay[key];
+            if (!d) return '';
+            return `
+                <div class="pay-item">
+                    <div class="pi-left">
+                        <img src="${d.img}" class="pi-img" onerror="this.src='https://placehold.co/100?text=Icon'">
+                        <div class="pi-info">
+                            <h5>${d.name}</h5>
+                            <p id="t-${key}">${d.num}</p>
+                        </div>
+                    </div>
+                    <button class="btn-action ripple" onclick="copyIt('t-${key}', '${d.name}')">
+                        <i class="ri-file-copy-line"></i>
+                    </button>
+                </div>
+            `;
+        }
+
+        window.openSheet = (mode) => {
+            playTick();
+            let html = '';
+            if (mode === 'qris') {
+                title.innerText = "SCAN QRIS";
+                html = `
+                    <div class="qris-display">
+                        <img src="https://files.catbox.moe/o2r7m1.jpg" style="width:100%; max-width:220px; border-radius:10px;">
+                        <p style="margin-top:10px; font-size:12px; color:#555;">Support All E-Wallet & Bank</p>
+                    </div>`;
+            } else if (mode === 'dana_only') {
+                title.innerText = "E-WALLET";
+                ['dana', 'shopee', 'gopay', 'ovo', 'linkaja'].forEach(k => html += rowHtml(k));
+            } else if (mode === 'bank') {
+                title.innerText = "TRANSFER BANK";
+                ['bca', 'sebank', 'bri'].forEach(k => html += rowHtml(k));
+            } else if (mode === 'pulsa') {
+                title.innerText = "TOP UP PULSA";
+                ['telkomsel', 'indosat', 'tri', 'smartfren'].forEach(k => html += rowHtml(k));
+            } else if (mode === 'all') {
+                title.innerText = "SEMUA METODE";
+                Object.keys(dataPay).forEach(k => html += rowHtml(k));
+            }
+            list.innerHTML = html;
+            sheet.classList.add('active');
+        };
+
+        document.getElementById('btnCloseSheet').onclick = () => {
+            sheet.classList.remove('active');
+            playTick();
+        };
+
+        window.copyIt = (id, label) => {
+            playTick();
+            const el = document.getElementById(id);
+            if (!el) return;
+            const txt = el.innerText.trim();
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(txt).then(() => {
+                    // Notification removed
+                }).catch(() => {
+                    fallbackCopy(txt);
+                });
+            } else {
+                fallbackCopy(txt);
+            }
+        };
+
+        function fallbackCopy(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+            } catch (err) {
+                alert('Gagal menyalin: salin manual ya.');
+            }
+            document.body.removeChild(textArea);
+        }
+
+        document.getElementById('btnMenu').onclick = () => {
+            playTick();
+            menuOverlay.classList.add('active');
+        };
+
+        menuClose.onclick = () => {
+            playTick();
+            menuOverlay.classList.remove('active');
+        };
+
+        currencySelector.onclick = () => {
+            playTick();
+            alert("Currency selector clicked. Currently set to ID / IDR");
+        };
+
+        function showUsagePage() {
+            playTick();
+            menuOverlay.classList.remove('active');
+            
+            const usageHTML = `
+                <div class="profile-section">
+                    <img src="https://files.catbox.moe/i7onek.jpg" class="p-img" onerror="this.src='https://placehold.co/100'">
+                    <div class="p-info">
+                        <h2 id="userName">— Hollyrei</h2>
+                        <p><span class="status-dot"></span> Online & Verified</p>
+                        <div class="social-bar">
+                            <a href="https://www.instagram.com/hollyrei_?igsh=aDBiaTRjOWdmeTE5" target="_blank" rel="noopener" class="soc-icon ripple" onclick="playTick()">
+                                <i class="ri-instagram-fill"></i>
+                            </a>
+                            <a href="https://t.me/HollyreiMrkt" target="_blank" rel="noopener" class="soc-icon ripple" onclick="playTick()">
+                                <i class="ri-telegram-fill"></i>
+                            </a>
+                            <a href="https://linkedin.com" target="_blank" rel="noopener" class="soc-icon ripple" onclick="playTick()">
+                                <i class="ri-linkedin-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="music-player">
+                    <div class="music-cover">
+                        <i class="ri-music-2-fill"></i>
+                    </div>
+                    <div class="music-info">
+                        <div class="music-title" id="musicTitle">${musicConfig.title}</div>
+                        <div class="music-artist" id="musicArtist">${musicConfig.artist}</div>
+                    </div>
+                    <div class="music-controls">
+                        <button class="music-btn ripple" id="prevBtn">
+                            <i class="ri-skip-back-fill"></i>
+                        </button>
+                        <button class="music-btn play ripple" id="playBtn">
+                            <i class="ri-play-fill"></i>
+                        </button>
+                        <button class="music-btn ripple" id="nextBtn">
+                            <i class="ri-skip-forward-fill"></i>
+                        </button>
+                    </div>
+                    <div class="volume-slider" id="volumeSlider">
+                        <div class="volume-fill" id="volumeFill"></div>
+                        <div class="volume-handle" id="volumeHandle"></div>
+                    </div>
+                </div>
+
+                <div style="margin: 20px 0;">
+                    <h3 style="color: var(--text-on-dark); font-size: 18px; font-weight: 700; margin-bottom: 15px; text-align: center;">Cara Penggunaan</h3>
+                    <div style="background: var(--card-surface); padding: 20px; border-radius: 20px; margin-bottom: 20px;">
+                        <div style="display: flex; gap: 12px; margin-bottom: 15px;">
+                            <div style="width: 24px; height: 24px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: bold; flex-shrink: 0;">1</div>
+                            <div>
+                                <h5 style="font-size: 14px; font-weight: 700; color: var(--text-on-dark); margin-bottom: 4px;">Pilih Metode Pembayaran</h5>
+                                <p style="font-size: 12px; color: var(--text-muted);">Pilih salah satu metode pembayaran yang tersedia seperti QRIS, E-Wallet, Transfer Bank, atau Top Up Pulsa.</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 12px; margin-bottom: 15px;">
+                            <div style="width: 24px; height: 24px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: bold; flex-shrink: 0;">2</div>
+                            <div>
+                                <h5 style="font-size: 14px; font-weight: 700; color: var(--text-on-dark); margin-bottom: 4px;">Salin Nomor atau Scan QR</h5>
+                                <p style="font-size: 12px; color: var(--text-muted);">Salin nomor tujuan atau scan QR code yang disediakan untuk melakukan pembayaran.</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 12px; margin-bottom: 15px;">
+                            <div style="width: 24px; height: 24px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: bold; flex-shrink: 0;">3</div>
+                            <div>
+                                <h5 style="font-size: 14px; font-weight: 700; color: var(--text-on-dark); margin-bottom: 4px;">Lakukan Pembayaran</h5>
+                                <p style="font-size: 12px; color: var(--text-muted);">Lakukan pembayaran sesuai dengan jumlah yang ditentukan melalui aplikasi pembayaran Anda.</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 12px;">
+                            <div style="width: 24px; height: 24px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: bold; flex-shrink: 0;">4</div>
+                            <div>
+                                <h5 style="font-size: 14px; font-weight: 700; color: var(--text-on-dark); margin-bottom: 4px;">Konfirmasi ke Admin</h5>
+                                <p style="font-size: 12px; color: var(--text-muted);">Kirim bukti transfer ke admin melalui WhatsApp untuk mempercepat proses verifikasi.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="ripple" onclick="showHomePage()" style="width:100%; padding:15px; border-radius:12px; border:none; background:#000; color:#fff; font-weight:700; margin-top:15px;">Kembali ke Beranda</button>
+                </div>
+            `;
+            
+            mainContent.innerHTML = usageHTML;
+            setupMusicControls();
+        }
+
+        function showHomePage() {
+            playTick();
+            menuOverlay.classList.remove('active');
+            
+            const homeHTML = `
+                <div class="profile-section">
+                    <img src="https://files.catbox.moe/i7onek.jpg" class="p-img" onerror="this.src='https://placehold.co/100'">
+                    <div class="p-info">
+                        <h2 id="userName">— Hollyrei</h2>
+                        <p><span class="status-dot"></span> Online & Verified</p>
+                        <div class="social-bar">
+                            <a href="https://www.instagram.com/hollyrei_?igsh=aDBiaTRjOWdmeTE5" target="_blank" rel="noopener" class="soc-icon ripple" onclick="playTick()">
+                                <i class="ri-instagram-fill"></i>
+                            </a>
+                            <a href="https://t.me/HollyreiMrkt" target="_blank" rel="noopener" class="soc-icon ripple" onclick="playTick()">
+                                <i class="ri-telegram-fill"></i>
+                            </a>
+                            <a href="https://linkedin.com" target="_blank" rel="noopener" class="soc-icon ripple" onclick="playTick()">
+                                <i class="ri-linkedin-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="music-player">
+                    <div class="music-cover">
+                        <i class="ri-music-2-fill"></i>
+                    </div>
+                    <div class="music-info">
+                        <div class="music-title" id="musicTitle">${musicConfig.title}</div>
+                        <div class="music-artist" id="musicArtist">${musicConfig.artist}</div>
+                    </div>
+                    <div class="music-controls">
+                        <button class="music-btn ripple" id="prevBtn">
+                            <i class="ri-skip-back-fill"></i>
+                        </button>
+                        <button class="music-btn play ripple" id="playBtn">
+                            <i class="ri-play-fill"></i>
+                        </button>
+                        <button class="music-btn ripple" id="nextBtn">
+                            <i class="ri-skip-forward-fill"></i>
+                        </button>
+                    </div>
+                    <div class="volume-slider" id="volumeSlider">
+                        <div class="volume-fill" id="volumeFill"></div>
+                        <div class="volume-handle" id="volumeHandle"></div>
+                    </div>
+                </div>
+
+                <div class="ad-slider" id="adSlider"></div>
+
+                <div class="marquee-container">
+                    <div class="marquee-text">
+                        INFO: Pembayaran Otomatis DANA & ShopeePay tersedia 24 Jam • Hubungi Admin jika ada kendala • Jangan lupa simpan bukti transfer.
+                    </div>
+                </div>
+
+                <div class="menu-title">Main Service</div>
+                <div class="menu-grid">
+                    <div class="menu-card card-qris-full ripple" onclick="openSheet('qris')">
+                        <div class="qris-left"><i class="ri-qr-scan-2-line"></i></div>
+                        <div class="qris-right">
+                            <h3>Scan QRIS</h3>
+                            <p>Instant Payment</p>
+                        </div>
+                    </div>
+                    <div class="menu-card ripple" onclick="openSheet('dana_only')">
+                        <div class="mc-icon" style="color:#10b981;"><i class="ri-wallet-3-fill"></i></div>
+                        <div class="mc-text">
+                            <h3>E-Wallet</h3>
+                            <p>Dana / OVO / GoPay</p>
+                        </div>
+                    </div>
+                    <div class="menu-card ripple" onclick="openSheet('bank')">
+                        <div class="mc-icon" style="color:#f59e0b;"><i class="ri-bank-card-fill"></i></div>
+                        <div class="mc-text">
+                            <h3>Transfer</h3>
+                            <p>Semua Bank</p>
+                        </div>
+                    </div>
+                    <div class="menu-card ripple" onclick="openSheet('pulsa')">
+                        <div class="mc-icon" style="color:#ef4444;"><i class="ri-smartphone-fill"></i></div>
+                        <div class="mc-text">
+                            <h3>Top Up</h3>
+                            <p>Pulsa All Op</p>
+                        </div>
+                    </div>
+                    <div class="menu-card ripple" onclick="openSheet('all')">
+                        <div class="mc-icon" style="color:#6366f1;"><i class="ri-grid-fill"></i></div>
+                        <div class="mc-text">
+                            <h3>Lainnya</h3>
+                            <p>Lihat Menu</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-features">
+                    <div class="feat-item ripple" onclick="playTick()">
+                        <i class="ri-flashlight-fill feat-icon"></i>
+                        <div class="feat-text">
+                            <h5>Proses Cepat</h5>
+                            <p>Instant Process</p>
+                        </div>
+                    </div>
+                    <div class="feat-item ripple" onclick="playTick()">
+                        <i class="ri-shield-check-fill feat-icon"></i>
+                        <div class="feat-text">
+                            <h5>Aman 100%</h5>
+                            <p>Terverifikasi</p>
+                        </div>
+                    </div>
+                    <div class="feat-item ripple" onclick="playTick()">
+                        <i class="ri-customer-service-fill feat-icon"></i>
+                        <div class="feat-text">
+                            <h5>Admin 24/7</h5>
+                            <p>Siap Membantu</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="promo-banner ripple">
+                    <h4>Promo Cashback 10%</h4>
+                    <p>Khusus pengguna baru untuk transaksi pertama via QRIS.</p>
+                    <i class="ri-coupon-3-line promo-deco"></i>
+                </div>
+                <div style="height:30px;"></div>
+            `;
+            
+            mainContent.innerHTML = homeHTML;
+            initAdSlider();
+            setupMusicControls();
+            setTimeout(typeWriter, 500);
+        }
+
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('.ripple');
+            if (btn) {
+                const rect = btn.getBoundingClientRect();
+                const size = Math.max(btn.clientWidth, btn.clientHeight);
+                const span = document.createElement('span');
+                span.style.cssText = `
+                    position: absolute;
+                    width: ${size}px; height: ${size}px;
+                    left: ${e.clientX - rect.left - size/2}px;
+                    top: ${e.clientY - rect.top - size/2}px;
+                    border-radius: 50%;
+                    background: rgba(255,255,255,0.3);
+                    transform: scale(0);
+                    animation: ripple 0.6s linear;
+                    pointer-events: none;
+                `;
+                btn.appendChild(span);
+                setTimeout(() => span.remove(), 600);
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initMusicPlayer();
+            showHomePage(); // Tampilkan halaman beranda pertama kali
+        });
+    </script>
+</body>
+</html>
